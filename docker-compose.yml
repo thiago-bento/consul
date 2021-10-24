@@ -1,0 +1,21 @@
+version: '3.7'
+vices:
+  consul-server1:
+    image: consul:1.9.3
+    container_name: consul-Bento
+    restart: always
+    volumes:
+      - ./server1.json:/consul/config/server1.json:ro
+      - ./certs/:/consul/config/certs/:ro
+      - ./app:/app 
+
+    networks:
+      - consul
+    ports:
+      - '8500:8500'
+      - '8600:8600/tcp'
+      - '8600:8600/udp'
+    command: 'agent -bootstrap-expect=3'
+networks:
+  consul:
+    driver: bridge
